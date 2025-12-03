@@ -9,8 +9,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(express.json()); // Parse JSON request bodies
-app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Swagger Documentation
 app.use(
@@ -37,7 +37,7 @@ app.get("/", (req, res) => {
 
 // API Routes
 app.use("/api/tasks", taskRoutes);
-app.use("/api", statsRoutes); // For /api/stats route
+app.use("/api", statsRoutes); // /api/stats
 
 // 404 Handler
 app.use((req, res) => {
@@ -48,15 +48,17 @@ app.use((req, res) => {
   });
 });
 
-// Error handling middleware (must be last)
+// Error handling middleware
 app.use(errorHandler);
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Server is running on http://localhost:${PORT}`);
-  console.log(
-    `📚 API Documentation available at http://localhost:${PORT}/api-docs`
-  );
-});
+// ➤ IMPORTANT: Do NOT listen in production (Vercel handles this)
+//    Only start server when running locally
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
+    console.log(`📚 Swagger Docs → http://localhost:${PORT}/api-docs`);
+  });
+}
 
+// Export Express app for Vercel serverless function
 module.exports = app;
