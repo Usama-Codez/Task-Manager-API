@@ -13,17 +13,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Swagger Documentation
-app.use(
-  "/api-docs",
-  swaggerUi.serve,
-  swaggerUi.setup(swaggerSpec, {
-    customCss: ".swagger-ui .topbar { display: none }",
-    customSiteTitle: "Task Manager API Docs",
-    swaggerOptions: {
-      persistAuthorization: true,
-    },
-  })
-);
+const swaggerUiServe = swaggerUi.serve;
+const swaggerUiSetup = swaggerUi.setup(swaggerSpec, {
+  customCss: ".swagger-ui .topbar { display: none }",
+  customSiteTitle: "Task Manager API Docs",
+  swaggerOptions: {
+    persistAuthorization: true,
+  },
+});
+
+app.use("/api-docs", swaggerUiServe);
+app.get("/api-docs", swaggerUiSetup);
 
 // Root route
 app.get("/", (req, res) => {
