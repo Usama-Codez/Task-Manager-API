@@ -20,8 +20,8 @@ const options = {
     },
     servers: [
       {
-        url: "https://task-manager-api-usama-codez.vercel.app",
-        description: "Production server",
+        url: "/",
+        description: "Current server",
       },
       {
         url: "http://localhost:3000",
